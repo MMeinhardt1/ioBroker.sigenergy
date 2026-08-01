@@ -114,6 +114,7 @@
         "calcBatteryTimeRemaining": true,
         "calcBatteryDailyFull": true,
         "calcBatteryCoverageTime": true,
+        "calcBatteryFlowPower": true,
         "calcSelfConsumptionRate": true,
         "calcAutarkyRate": true,
         "calcPvYield": true,
