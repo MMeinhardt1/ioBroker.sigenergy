@@ -1171,7 +1171,13 @@ class Sigenergy extends utils.Adapter {
             if (this._stopped) {
                 return;
             }
-            if (val !== undefined && val !== null) {
+            // Only skip when the value is `undefined` (the corresponding statistic is
+            // disabled via config, so the key never appears in statsValues at all).
+            // `null` is an intentional result (e.g. battery fully charged -> no time-to-full,
+            // not discharging -> no time-remaining) and must be written to clear any stale
+            // numeric value left over from a previous poll — otherwise e.g. batteryTimeToFull
+            // would keep showing the last computed minutes forever after the battery reaches 100%.
+            if (val !== undefined) {
                 await this.setStateAsync(id, { val, ack: true });
             }
         }
