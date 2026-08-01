@@ -292,9 +292,9 @@ class Sigenergy extends utils.Adapter {
             return;
         }
 
-        // Restore today's min/max SOC from the last persisted state values,
-        // so a restart mid-day does not reset them to the current SOC.
-        await this._restoreDayMinMaxSoc();
+        // Restore today's accumulated statistics from the last persisted state
+        // values, so a restart mid-day does not reset them to zero / current.
+        await this._restoreDayStats();
 
         // Connect and start polling
         await this._connectAndPoll();
@@ -1746,31 +1746,48 @@ class Sigenergy extends utils.Adapter {
     }
 
     /**
-     * Restore today's min/max SOC from the last persisted ioBroker state
-     * values after an adapter restart. Without this, statistics.dayMinSoc
-     * and statistics.dayMaxSoc would reset to the current SOC on every
-     * restart instead of retaining the actual daily range.
+     * Restore "today" statistics from the last persisted ioBroker state
+     * values after an adapter restart. Several statistics.* values are
+     * accumulated in memory across the day (SOC min/max, battery coverage
+     * time, grid import/export energy, daily charge completion time) and
+     * would otherwise incorrectly reset whenever the adapter restarts
+     * mid-day, instead of retaining the actual values recorded so far today.
      */
-    async _restoreDayMinMaxSoc() {
+    async _restoreDayStats() {
         if (!this._caps || !this._caps.plant) {
             return;
         }
         try {
-            const [minState, maxState] = await Promise.all([
-                this.getStateAsync('statistics.dayMinSoc'),
-                this.getStateAsync('statistics.dayMaxSoc'),
-            ]);
-            if (!minState || !maxState || typeof minState.val !== 'number' || typeof maxState.val !== 'number') {
-                return;
-            }
-            // Use the older of the two timestamps to be conservative about "still today"
-            const lastWrittenTs = Math.min(minState.ts || 0, maxState.ts || 0);
-            this.stats.restoreDayStats(minState.val, maxState.val, lastWrittenTs);
-            this.log.debug(
-                `Restored today's SOC range from persisted states: min=${minState.val}%, max=${maxState.val}%`,
-            );
+            const ids = [
+                'statistics.dayMinSoc',
+                'statistics.dayMaxSoc',
+                'statistics.batteryCoverageToday',
+                'statistics.gridImportToday',
+                'statistics.gridExportToday',
+                'statistics.batteryDailyChargeTime',
+            ];
+            const states = await Promise.all(ids.map(id => this.getStateAsync(id)));
+
+            const persisted = {};
+            const keys = [
+                'dayMinSoc',
+                'dayMaxSoc',
+                'batteryCoverageToday',
+                'gridImportToday',
+                'gridExportToday',
+                'batteryDailyChargeTime',
+            ];
+            keys.forEach((key, i) => {
+                const s = states[i];
+                if (s && typeof s.val === 'number') {
+                    persisted[key] = { val: s.val, ts: s.ts || 0 };
+                }
+            });
+
+            this.stats.restoreDayStats(persisted);
+            this.log.debug(`Restored today's statistics from persisted states: ${JSON.stringify(persisted)}`);
         } catch (err) {
-            this.log.debug(`Could not restore day min/max SOC from states: ${err.message}`);
+            this.log.debug(`Could not restore today's statistics from states: ${err.message}`);
         }
     }
 
