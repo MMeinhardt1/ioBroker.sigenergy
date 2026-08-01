@@ -1141,6 +1141,31 @@ class Sigenergy extends utils.Adapter {
     }
 
     /**
+     * Format a minute value as an "H:MMh" string (e.g. 83 -> "1:23h").
+     * Hours are not capped at 24. Distinguishes three cases so the caller's
+     * null-vs-undefined write semantics (see _updateStatistics) are preserved:
+     *  - undefined  (statistic disabled via config)          -> undefined (skip write)
+     *  - null / NaN (statistic enabled but currently N/A)     -> null (clears stale value)
+     *  - number                                                -> formatted "H:MMh" string
+     *
+     * @param {number|null|undefined} totalMinutes
+     * @returns {string|null|undefined}
+     */
+    _formatMinutesAsHM(totalMinutes) {
+        if (totalMinutes === undefined) {
+            return undefined;
+        }
+        if (typeof totalMinutes !== 'number' || Number.isNaN(totalMinutes)) {
+            return null;
+        }
+        const sign = totalMinutes < 0 ? '-' : '';
+        const abs = Math.round(Math.abs(totalMinutes));
+        const hours = Math.floor(abs / 60);
+        const minutes = abs % 60;
+        return `${sign}${hours}:${String(minutes).padStart(2, '0')}h`;
+    }
+
+    /**
      * Update and write statistics states
      */
     async _updateStatistics() {
@@ -1152,9 +1177,13 @@ class Sigenergy extends utils.Adapter {
 
         const mapping = {
             'statistics.batteryTimeToFull': statsValues.batteryTimeToFull,
+            'statistics.batteryTimeToFullHM': this._formatMinutesAsHM(statsValues.batteryTimeToFull),
             'statistics.batteryTimeRemaining': statsValues.batteryTimeRemaining,
+            'statistics.batteryTimeRemainingHM': this._formatMinutesAsHM(statsValues.batteryTimeRemaining),
             'statistics.batteryDailyChargeTime': statsValues.batteryDailyChargeTime,
+            'statistics.batteryDailyChargeTimeHM': this._formatMinutesAsHM(statsValues.batteryDailyChargeTime),
             'statistics.batteryCoverageToday': statsValues.batteryCoverageToday,
+            'statistics.batteryCoverageTodayHM': this._formatMinutesAsHM(statsValues.batteryCoverageToday),
             'statistics.pvToBatteryPower': statsValues.pvToBatteryPower,
             'statistics.batteryToHousePower': statsValues.batteryToHousePower,
             'statistics.gridImportToday': statsValues.gridImportToday,
@@ -1641,11 +1670,25 @@ class Sigenergy extends utils.Adapter {
                 role: 'value',
             },
             {
+                id: 'statistics.batteryTimeToFullHM',
+                name: 'Time until battery is fully charged (h:mm)',
+                type: 'string',
+                unit: '',
+                role: 'text',
+            },
+            {
                 id: 'statistics.batteryTimeRemaining',
                 name: 'Battery time remaining at current load',
                 type: 'number',
                 unit: 'min',
                 role: 'value',
+            },
+            {
+                id: 'statistics.batteryTimeRemainingHM',
+                name: 'Battery time remaining at current load (h:mm)',
+                type: 'string',
+                unit: '',
+                role: 'text',
             },
             {
                 id: 'statistics.batteryDailyChargeTime',
@@ -1655,11 +1698,25 @@ class Sigenergy extends utils.Adapter {
                 role: 'value',
             },
             {
+                id: 'statistics.batteryDailyChargeTimeHM',
+                name: 'Today: time until battery was full (h:mm)',
+                type: 'string',
+                unit: '',
+                role: 'text',
+            },
+            {
                 id: 'statistics.batteryCoverageToday',
                 name: 'Today: minutes battery covered consumption',
                 type: 'number',
                 unit: 'min',
                 role: 'value',
+            },
+            {
+                id: 'statistics.batteryCoverageTodayHM',
+                name: 'Today: time battery covered consumption (h:mm)',
+                type: 'string',
+                unit: '',
+                role: 'text',
             },
             {
                 id: 'statistics.pvToBatteryPower',
