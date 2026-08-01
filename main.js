@@ -1162,6 +1162,7 @@ class Sigenergy extends utils.Adapter {
             'statistics.selfConsumptionRate': statsValues.selfConsumptionRate,
             'statistics.autarkyRate': statsValues.autarkyRate,
             'statistics.housePower': statsValues.housePower,
+            'statistics.currentSoc': statsValues.currentSoc,
             'statistics.dayMaxSoc': statsValues.dayMaxSoc,
             'statistics.dayMinSoc': statsValues.dayMinSoc,
         };
@@ -1702,6 +1703,13 @@ class Sigenergy extends utils.Adapter {
                 type: 'number',
                 unit: 'kW',
                 role: 'value.power',
+            },
+            {
+                id: 'statistics.currentSoc',
+                name: 'Current battery SOC (copy for convenience)',
+                type: 'number',
+                unit: '%',
+                role: 'value.battery',
             },
             {
                 id: 'statistics.dayMaxSoc',
