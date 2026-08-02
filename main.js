@@ -1692,14 +1692,14 @@ class Sigenergy extends utils.Adapter {
             },
             {
                 id: 'statistics.batteryDailyChargeTime',
-                name: 'Today: minutes until battery was full',
+                name: 'Today: cumulative minutes spent charging',
                 type: 'number',
                 unit: 'min',
                 role: 'value',
             },
             {
                 id: 'statistics.batteryDailyChargeTimeHM',
-                name: 'Today: time until battery was full (h:mm)',
+                name: 'Today: cumulative time spent charging (h:mm)',
                 type: 'string',
                 unit: '',
                 role: 'text',
