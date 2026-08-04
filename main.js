@@ -292,6 +292,10 @@ class Sigenergy extends utils.Adapter {
             return;
         }
 
+        // Restore today's accumulated statistics from the last persisted state
+        // values, so a restart mid-day does not reset them to zero / current.
+        await this._restoreDayStats();
+
         // Connect and start polling
         await this._connectAndPoll();
 
@@ -1137,6 +1141,31 @@ class Sigenergy extends utils.Adapter {
     }
 
     /**
+     * Format a minute value as an "H:MMh" string (e.g. 83 -> "1:23h").
+     * Hours are not capped at 24. Distinguishes three cases so the caller's
+     * null-vs-undefined write semantics (see _updateStatistics) are preserved:
+     *  - undefined  (statistic disabled via config)          -> undefined (skip write)
+     *  - null / NaN (statistic enabled but currently N/A)     -> null (clears stale value)
+     *  - number                                                -> formatted "H:MMh" string
+     *
+     * @param {number|null|undefined} totalMinutes
+     * @returns {string|null|undefined}
+     */
+    _formatMinutesAsHM(totalMinutes) {
+        if (totalMinutes === undefined) {
+            return undefined;
+        }
+        if (typeof totalMinutes !== 'number' || Number.isNaN(totalMinutes)) {
+            return null;
+        }
+        const sign = totalMinutes < 0 ? '-' : '';
+        const abs = Math.round(Math.abs(totalMinutes));
+        const hours = Math.floor(abs / 60);
+        const minutes = abs % 60;
+        return `${sign}${hours}:${String(minutes).padStart(2, '0')}h`;
+    }
+
+    /**
      * Update and write statistics states
      */
     async _updateStatistics() {
@@ -1148,12 +1177,22 @@ class Sigenergy extends utils.Adapter {
 
         const mapping = {
             'statistics.batteryTimeToFull': statsValues.batteryTimeToFull,
+            'statistics.batteryTimeToFullHM': this._formatMinutesAsHM(statsValues.batteryTimeToFull),
             'statistics.batteryTimeRemaining': statsValues.batteryTimeRemaining,
+            'statistics.batteryTimeRemainingHM': this._formatMinutesAsHM(statsValues.batteryTimeRemaining),
             'statistics.batteryDailyChargeTime': statsValues.batteryDailyChargeTime,
+            'statistics.batteryDailyChargeTimeHM': this._formatMinutesAsHM(statsValues.batteryDailyChargeTime),
             'statistics.batteryCoverageToday': statsValues.batteryCoverageToday,
+            'statistics.batteryCoverageTodayHM': this._formatMinutesAsHM(statsValues.batteryCoverageToday),
+            'statistics.pvToBatteryPower': statsValues.pvToBatteryPower,
+            'statistics.batteryToHousePower': statsValues.batteryToHousePower,
+            'statistics.gridImportToday': statsValues.gridImportToday,
+            'statistics.gridExportToday': statsValues.gridExportToday,
             'statistics.selfConsumptionRate': statsValues.selfConsumptionRate,
             'statistics.autarkyRate': statsValues.autarkyRate,
             'statistics.housePower': statsValues.housePower,
+            'statistics.currentSoc': statsValues.currentSoc,
+            'statistics.currentPvPower': statsValues.currentPvPower,
             'statistics.dayMaxSoc': statsValues.dayMaxSoc,
             'statistics.dayMinSoc': statsValues.dayMinSoc,
         };
@@ -1162,7 +1201,13 @@ class Sigenergy extends utils.Adapter {
             if (this._stopped) {
                 return;
             }
-            if (val !== undefined && val !== null) {
+            // Only skip when the value is `undefined` (the corresponding statistic is
+            // disabled via config, so the key never appears in statsValues at all).
+            // `null` is an intentional result (e.g. battery fully charged -> no time-to-full,
+            // not discharging -> no time-remaining) and must be written to clear any stale
+            // numeric value left over from a previous poll — otherwise e.g. batteryTimeToFull
+            // would keep showing the last computed minutes forever after the battery reaches 100%.
+            if (val !== undefined) {
                 await this.setStateAsync(id, { val, ack: true });
             }
         }
@@ -1626,6 +1671,13 @@ class Sigenergy extends utils.Adapter {
                 role: 'value',
             },
             {
+                id: 'statistics.batteryTimeToFullHM',
+                name: 'Time until battery is fully charged (h:mm)',
+                type: 'string',
+                unit: '',
+                role: 'text',
+            },
+            {
                 id: 'statistics.batteryTimeRemaining',
                 name: 'Battery time remaining at current load',
                 type: 'number',
@@ -1633,11 +1685,25 @@ class Sigenergy extends utils.Adapter {
                 role: 'value',
             },
             {
+                id: 'statistics.batteryTimeRemainingHM',
+                name: 'Battery time remaining at current load (h:mm)',
+                type: 'string',
+                unit: '',
+                role: 'text',
+            },
+            {
                 id: 'statistics.batteryDailyChargeTime',
-                name: 'Today: minutes until battery was full',
+                name: 'Today: cumulative minutes spent charging',
                 type: 'number',
                 unit: 'min',
                 role: 'value',
+            },
+            {
+                id: 'statistics.batteryDailyChargeTimeHM',
+                name: 'Today: cumulative time spent charging (h:mm)',
+                type: 'string',
+                unit: '',
+                role: 'text',
             },
             {
                 id: 'statistics.batteryCoverageToday',
@@ -1645,6 +1711,41 @@ class Sigenergy extends utils.Adapter {
                 type: 'number',
                 unit: 'min',
                 role: 'value',
+            },
+            {
+                id: 'statistics.batteryCoverageTodayHM',
+                name: 'Today: time battery covered consumption (h:mm)',
+                type: 'string',
+                unit: '',
+                role: 'text',
+            },
+            {
+                id: 'statistics.pvToBatteryPower',
+                name: 'PV power currently charging the battery',
+                type: 'number',
+                unit: 'kW',
+                role: 'value.power',
+            },
+            {
+                id: 'statistics.batteryToHousePower',
+                name: 'Battery power currently covering house consumption',
+                type: 'number',
+                unit: 'kW',
+                role: 'value.power',
+            },
+            {
+                id: 'statistics.gridImportToday',
+                name: 'Today: energy imported from grid',
+                type: 'number',
+                unit: 'kWh',
+                role: 'value.energy',
+            },
+            {
+                id: 'statistics.gridExportToday',
+                name: 'Today: energy exported to grid',
+                type: 'number',
+                unit: 'kWh',
+                role: 'value.energy',
             },
             {
                 id: 'statistics.selfConsumptionRate',
@@ -1663,6 +1764,20 @@ class Sigenergy extends utils.Adapter {
             {
                 id: 'statistics.housePower',
                 name: 'Calculated house consumption',
+                type: 'number',
+                unit: 'kW',
+                role: 'value.power',
+            },
+            {
+                id: 'statistics.currentSoc',
+                name: 'Current battery SOC (copy for convenience)',
+                type: 'number',
+                unit: '%',
+                role: 'value.battery',
+            },
+            {
+                id: 'statistics.currentPvPower',
+                name: 'Current PV power (copy for convenience)',
                 type: 'number',
                 unit: 'kW',
                 role: 'value.power',
@@ -1698,6 +1813,52 @@ class Sigenergy extends utils.Adapter {
                 native: {},
             };
             await this.setObjectNotExistsAsync(s.id, statObj);
+        }
+    }
+
+    /**
+     * Restore "today" statistics from the last persisted ioBroker state
+     * values after an adapter restart. Several statistics.* values are
+     * accumulated in memory across the day (SOC min/max, battery coverage
+     * time, grid import/export energy, daily charge completion time) and
+     * would otherwise incorrectly reset whenever the adapter restarts
+     * mid-day, instead of retaining the actual values recorded so far today.
+     */
+    async _restoreDayStats() {
+        if (!this._caps || !this._caps.plant) {
+            return;
+        }
+        try {
+            const ids = [
+                'statistics.dayMinSoc',
+                'statistics.dayMaxSoc',
+                'statistics.batteryCoverageToday',
+                'statistics.gridImportToday',
+                'statistics.gridExportToday',
+                'statistics.batteryDailyChargeTime',
+            ];
+            const states = await Promise.all(ids.map(id => this.getStateAsync(id)));
+
+            const persisted = {};
+            const keys = [
+                'dayMinSoc',
+                'dayMaxSoc',
+                'batteryCoverageToday',
+                'gridImportToday',
+                'gridExportToday',
+                'batteryDailyChargeTime',
+            ];
+            keys.forEach((key, i) => {
+                const s = states[i];
+                if (s && typeof s.val === 'number') {
+                    persisted[key] = { val: s.val, ts: s.ts || 0 };
+                }
+            });
+
+            this.stats.restoreDayStats(persisted);
+            this.log.debug(`Restored today's statistics from persisted states: ${JSON.stringify(persisted)}`);
+        } catch (err) {
+            this.log.debug(`Could not restore today's statistics from states: ${err.message}`);
         }
     }
 

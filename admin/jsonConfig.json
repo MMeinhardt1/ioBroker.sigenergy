@@ -790,6 +790,17 @@
           "lg": 6,
           "xl": 6
         },
+        "calcBatteryFlowPower": {
+          "type": "checkbox",
+          "label": "Battery charge/discharge source power",
+          "help": "While charging: PV power currently going into the battery. While discharging: battery power currently covering house consumption",
+          "default": true,
+          "sm": 12,
+          "md": 6,
+          "xs": 12,
+          "lg": 6,
+          "xl": 6
+        },
         "calcSelfConsumptionRate": {
           "type": "checkbox",
           "label": "Self-consumption rate",
