@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "sigenergy",
-        "version": "3.0.10",
+        "version": "3.1.0",
         "news": {
+            "3.1.0": {
+                "en": "(MMeinhardt1) feat: statistics improvements — battery flow power, daily grid import/export, h:mm durations, cumulative daily charging time; daily statistics now survive an adapter restart. (ssbingo) chore: minimum requirements raised to js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "de": "(MMeinhardt1) feat: Statistik-Erweiterungen — Batterie-Flussleistung, täglicher Netzbezug/-einspeisung, h:mm-Zeitdauern, kumulierte tägliche Ladezeit; Tagesstatistiken überstehen jetzt einen Adapter-Neustart. (ssbingo) chore: Mindestanforderungen angehoben auf js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "ru": "(MMeinhardt1) feat: улучшения статистики — мощность потоков батареи, суточный импорт/экспорт из сети, длительности в формате h:mm, суммарное суточное время зарядки; суточная статистика теперь сохраняется при перезапуске адаптера. (ssbingo) chore: минимальные требования повышены до js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "pt": "(MMeinhardt1) feat: melhorias nas estatísticas — potência de fluxo da bateria, importação/exportação diária da rede, durações em h:mm, tempo de carga diário acumulado; as estatísticas diárias agora sobrevivem a um reinício do adaptador. (ssbingo) chore: requisitos mínimos elevados para js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "nl": "(MMeinhardt1) feat: statistiekverbeteringen — batterijstroomvermogen, dagelijkse netimport/-export, h:mm-tijdsduren, cumulatieve dagelijkse laadtijd; dagstatistieken overleven nu een herstart van de adapter. (ssbingo) chore: minimumvereisten verhoogd naar js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "fr": "(MMeinhardt1) feat : améliorations des statistiques — puissance de flux de la batterie, import/export réseau quotidien, durées au format h:mm, temps de charge quotidien cumulé ; les statistiques journalières survivent désormais à un redémarrage de l'adaptateur. (ssbingo) chore : exigences minimales relevées à js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "it": "(MMeinhardt1) feat: miglioramenti alle statistiche — potenza di flusso della batteria, importazione/esportazione giornaliera dalla rete, durate in formato h:mm, tempo di ricarica giornaliero cumulativo; le statistiche giornaliere sopravvivono ora a un riavvio dell'adattatore. (ssbingo) chore: requisiti minimi elevati a js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "es": "(MMeinhardt1) feat: mejoras en las estadísticas — potencia de flujo de la batería, importación/exportación diaria de la red, duraciones en h:mm, tiempo de carga diario acumulado; las estadísticas diarias ahora sobreviven a un reinicio del adaptador. (ssbingo) chore: requisitos mínimos elevados a js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "pl": "(MMeinhardt1) feat: ulepszenia statystyk — moc przepływu baterii, dzienny import/eksport z sieci, czasy w formacie h:mm, skumulowany dzienny czas ładowania; statystyki dzienne przetrwają teraz restart adaptera. (ssbingo) chore: minimalne wymagania podniesione do js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "uk": "(MMeinhardt1) feat: покращення статистики — потужність потоків батареї, добовий імпорт/експорт із мережі, тривалості у форматі h:mm, сумарний добовий час заряджання; добова статистика тепер зберігається під час перезапуску адаптера. (ssbingo) chore: мінімальні вимоги підвищено до js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
+                "zh-cn": "(MMeinhardt1) feat: 统计功能改进 — 电池流量功率、每日电网进口/出口、h:mm 时长格式、每日累计充电时长；每日统计现在可在适配器重启后保留。(ssbingo) chore: 最低要求提升至 js-controller 6.0.11 / admin 8.0.0 / Node.js 22"
+            },
             "3.0.10": {
                 "en": "(ssbingo) chore: bump js-yaml from 4.1.1 to 4.3.0",
                 "de": "(ssbingo) chore: js-yaml von 4.1.1 auf 4.3.0 aktualisiert",
@@ -82,7 +95,7 @@
         ],
         "globalDependencies": [
             {
-                "admin": ">=7.6.20"
+                "admin": ">=8.0.0"
             }
         ],
         "licenseInformation": {

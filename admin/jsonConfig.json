@@ -770,8 +770,8 @@
         },
         "calcBatteryDailyFull": {
           "type": "checkbox",
-          "label": "Daily charge completion time",
-          "help": "Today: how long it took until the battery was fully charged",
+          "label": "Daily charging time",
+          "help": "Today: cumulative time the battery spent actively charging",
           "default": true,
           "sm": 12,
           "md": 6,

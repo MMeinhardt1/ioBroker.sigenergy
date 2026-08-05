@@ -1148,8 +1148,8 @@ class Sigenergy extends utils.Adapter {
      *  - null / NaN (statistic enabled but currently N/A)     -> null (clears stale value)
      *  - number                                                -> formatted "H:MMh" string
      *
-     * @param {number|null|undefined} totalMinutes
-     * @returns {string|null|undefined}
+     * @param {number|null|undefined} totalMinutes - Duration in minutes, or null/undefined per the cases above
+     * @returns {string|null|undefined} Formatted "H:MMh" string, or null/undefined mirroring the input case
      */
     _formatMinutesAsHM(totalMinutes) {
         if (totalMinutes === undefined) {
@@ -2493,7 +2493,7 @@ class Sigenergy extends utils.Adapter {
     /**
      * Returns true when the onOffGridStatus value indicates off-grid operation.
      *
-     * @param {number|null|undefined} val - current onOffGridStatus value
+     * @param {ioBroker.StateValue|undefined} val - current onOffGridStatus value
      */
     _emergencyIsOffGrid(val) {
         return val !== 0 && val !== null && val !== undefined;
@@ -2502,7 +2502,7 @@ class Sigenergy extends utils.Adapter {
     /**
      * Human-readable description of an onOffGridStatus value.
      *
-     * @param {number|null|undefined} val - current onOffGridStatus value
+     * @param {ioBroker.StateValue|undefined} val - current onOffGridStatus value
      */
     _emergencyModeName(val) {
         switch (val) {
