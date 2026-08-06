@@ -255,6 +255,9 @@ Status and power readings for the DC charger.
 
 ## Changelog
 
+### 3.1.1 (2026-08-05)
+- (ssbingo) chore: security updates for transitive dependencies (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)
+
 ### 3.1.0 (2026-08-05)
 - (MMeinhardt1) feat: statistics module improvements — new states `pvToBatteryPower`, `batteryToHousePower`, `gridImportToday`, `gridExportToday`, `currentSoc`, `currentPvPower` and `h:mm` formatted durations for all time statistics
 - (MMeinhardt1) feat: daily statistics (SOC min/max, coverage time, grid energy, charging time) are restored from persisted states and now survive an adapter restart mid-day

@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "sigenergy",
-        "version": "3.1.0",
+        "version": "3.1.1",
         "news": {
+            "3.1.1": {
+                "en": "(ssbingo) chore: security updates for transitive dependencies (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "de": "(ssbingo) chore: Sicherheitsupdates für transitive Abhängigkeiten (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "ru": "(ssbingo) chore: обновления безопасности для транзитивных зависимостей (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "pt": "(ssbingo) chore: atualizações de segurança para dependências transitivas (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "nl": "(ssbingo) chore: beveiligingsupdates voor transitieve afhankelijkheden (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "fr": "(ssbingo) chore : mises à jour de sécurité pour les dépendances transitives (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "it": "(ssbingo) chore: aggiornamenti di sicurezza per le dipendenze transitive (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "es": "(ssbingo) chore: actualizaciones de seguridad para dependencias transitivas (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "pl": "(ssbingo) chore: aktualizacje bezpieczeństwa zależności przechodnich (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "uk": "(ssbingo) chore: оновлення безпеки для транзитивних залежностей (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
+                "zh-cn": "(ssbingo) chore: 传递依赖的安全更新（brace-expansion 1.1.18、axios 1.19.0、fast-uri 3.1.5、socket.io-parser 4.2.7）"
+            },
             "3.1.0": {
                 "en": "(MMeinhardt1) feat: statistics improvements — battery flow power, daily grid import/export, h:mm durations, cumulative daily charging time; daily statistics now survive an adapter restart. (ssbingo) chore: minimum requirements raised to js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
                 "de": "(MMeinhardt1) feat: Statistik-Erweiterungen — Batterie-Flussleistung, täglicher Netzbezug/-einspeisung, h:mm-Zeitdauern, kumulierte tägliche Ladezeit; Tagesstatistiken überstehen jetzt einen Adapter-Neustart. (ssbingo) chore: Mindestanforderungen angehoben auf js-controller 6.0.11 / admin 8.0.0 / Node.js 22",
