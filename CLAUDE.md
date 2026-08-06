@@ -55,6 +55,21 @@ Wird ein String inhaltlich geändert, ist der alte Key zu ersetzen und nicht zus
 - Version steht in `package.json` **und** `io-package.json` → `common.version`; dazu ein Eintrag in
   `io-package.json` → `common.news` (en + de) und im Changelog des README.
 
+## Dependencies und `overrides`
+
+Der `overrides`-Block in `package.json` ist kein Altlast-Ballast, sondern hält `npm audit` auf 0.
+Er hebt transitive Dev-Dependencies (mocha, eslint-config, adapter-dev) auf gepatchte Versionen an,
+die deren Maintainer noch nicht nachgezogen haben. Vor dem Entfernen eines Eintrags `npm audit`
+prüfen — ohne die Overrides kommen die Findings zurück.
+
+`@iobroker/dev-server` wurde bewusst entfernt: es zog `request`, `xmldom` und `form-data@2.3.3` nach,
+für die es keine unverwundbare Version gibt (beide Pakete sind deprecated). Damit entfallen auch
+`npm start` und `npm run watch`. Nicht ohne Not wieder aufnehmen — falls doch, kehren drei kritische
+Findings zurück.
+
+Runtime-Dependencies (`@iobroker/adapter-core`, `modbus-serial`, `serialport`) sind davon nicht
+betroffen; `npm audit --omit=dev` muss ohnehin immer 0 sein.
+
 ## Kommandos
 
 ```bash
