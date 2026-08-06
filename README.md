@@ -255,6 +255,12 @@ Status and power readings for the DC charger.
 
 ## Changelog
 
+### 3.1.2 (2026-08-06)
+- (ssbingo) chore: resolved all 28 npm audit findings (3 critical, 11 high) — development tooling only, the published adapter is unchanged
+- (ssbingo) chore: removed `@iobroker/dev-server`; it was the sole source of the critical findings via the deprecated `request` and `xmldom` packages, for which no fixed release exists. This also removes the `npm start` / `npm run watch` scripts
+- (ssbingo) chore: added `overrides` lifting transitive dev dependencies onto patched versions
+- (ssbingo) chore: removed `main.test.js`, an unused create-adapter template stub
+
 ### 3.1.1 (2026-08-05)
 - (ssbingo) chore: security updates for transitive dependencies (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)
 

@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "sigenergy",
-        "version": "3.1.1",
+        "version": "3.1.2",
         "news": {
+            "3.1.2": {
+                "en": "(ssbingo) chore: all npm audit findings resolved (28 -> 0); removed @iobroker/dev-server, which pulled in unpatchable deprecated packages. Development tooling only — the adapter itself is unchanged.",
+                "de": "(ssbingo) chore: alle npm-audit-Findings behoben (28 -> 0); @iobroker/dev-server entfernt, das nicht patchbare veraltete Pakete mitzog. Betrifft nur das Entwicklungs-Tooling — der Adapter selbst ist unverändert.",
+                "ru": "(ssbingo) chore: устранены все замечания npm audit (28 -> 0); удалён @iobroker/dev-server, тянувший устаревшие пакеты без исправлений. Затрагивает только инструменты разработки — сам адаптер не изменён.",
+                "pt": "(ssbingo) chore: todos os alertas do npm audit resolvidos (28 -> 0); removido o @iobroker/dev-server, que trazia pacotes obsoletos sem correção. Apenas ferramentas de desenvolvimento — o adaptador em si não mudou.",
+                "nl": "(ssbingo) chore: alle npm audit-meldingen opgelost (28 -> 0); @iobroker/dev-server verwijderd, dat niet-patchbare verouderde pakketten meebracht. Alleen ontwikkeltooling — de adapter zelf is ongewijzigd.",
+                "fr": "(ssbingo) chore : tous les signalements npm audit résolus (28 -> 0) ; suppression de @iobroker/dev-server, qui entraînait des paquets obsolètes non corrigeables. Outillage de développement uniquement — l'adaptateur lui-même est inchangé.",
+                "it": "(ssbingo) chore: risolti tutti i rilievi di npm audit (28 -> 0); rimosso @iobroker/dev-server, che trascinava pacchetti obsoleti non correggibili. Solo strumenti di sviluppo — l'adattatore stesso è invariato.",
+                "es": "(ssbingo) chore: resueltos todos los hallazgos de npm audit (28 -> 0); eliminado @iobroker/dev-server, que arrastraba paquetes obsoletos sin parche. Solo herramientas de desarrollo — el adaptador en sí no cambia.",
+                "pl": "(ssbingo) chore: usunięto wszystkie zgłoszenia npm audit (28 -> 0); usunięto @iobroker/dev-server, który wciągał przestarzałe pakiety bez poprawek. Dotyczy tylko narzędzi deweloperskich — sam adapter bez zmian.",
+                "uk": "(ssbingo) chore: усунуто всі зауваження npm audit (28 -> 0); видалено @iobroker/dev-server, який тягнув застарілі пакети без виправлень. Стосується лише інструментів розробки — сам адаптер не змінено.",
+                "zh-cn": "(ssbingo) chore: 解决全部 npm audit 问题（28 -> 0）；移除了引入无法修补的废弃软件包的 @iobroker/dev-server。仅涉及开发工具链，适配器本身未变更。"
+            },
             "3.1.1": {
                 "en": "(ssbingo) chore: security updates for transitive dependencies (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
                 "de": "(ssbingo) chore: Sicherheitsupdates für transitive Abhängigkeiten (brace-expansion 1.1.18, axios 1.19.0, fast-uri 3.1.5, socket.io-parser 4.2.7)",
