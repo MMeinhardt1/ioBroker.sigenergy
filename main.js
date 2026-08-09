@@ -1128,6 +1128,7 @@ class Sigenergy extends utils.Adapter {
             'plant.essSoc': 'soc',
             'plant.essRatedEnergyCapacity': 'ratedCapacity',
             'plant.essDischargeSOC': 'cutoffSoc',
+            'plant.emsWorkMode': 'emsWorkMode',
             'inverter.pv1Voltage': 'pv1Voltage',
             'inverter.pv1Current': 'pv1Current',
             'inverter.pv2Voltage': 'pv2Voltage',
@@ -1166,6 +1167,25 @@ class Sigenergy extends utils.Adapter {
     }
 
     /**
+     * Look up the plain-text label for the numeric EMS work mode (register
+     * 30003 / plant.emsWorkMode), using the same EMS_WORK_MODES map already
+     * used for the `common.states` metadata on plant.emsWorkMode. Unlike that
+     * metadata (only understood by UIs/tools that render `common.states`),
+     * this writes the human-readable text directly as the state value, so any
+     * consumer (VIS, Node-RED, external scripts) can use it without needing
+     * the lookup table.
+     *
+     * @param {number|undefined} mode - Raw value of plant.emsWorkMode
+     * @returns {string|undefined} Plain-text label, or undefined if mode hasn't been read yet
+     */
+    _formatEmsWorkMode(mode) {
+        if (mode === undefined) {
+            return undefined;
+        }
+        return EMS_WORK_MODES[mode] || `Unknown (${mode})`;
+    }
+
+    /**
      * Update and write statistics states
      */
     async _updateStatistics() {
@@ -1193,6 +1213,7 @@ class Sigenergy extends utils.Adapter {
             'statistics.housePower': statsValues.housePower,
             'statistics.currentSoc': statsValues.currentSoc,
             'statistics.currentPvPower': statsValues.currentPvPower,
+            'statistics.emsWorkMode': this._formatEmsWorkMode(this._currentData.emsWorkMode),
             'statistics.dayMaxSoc': statsValues.dayMaxSoc,
             'statistics.dayMinSoc': statsValues.dayMinSoc,
         };
@@ -1781,6 +1802,13 @@ class Sigenergy extends utils.Adapter {
                 type: 'number',
                 unit: 'kW',
                 role: 'value.power',
+            },
+            {
+                id: 'statistics.emsWorkMode',
+                name: 'EMS work mode (plain text)',
+                type: 'string',
+                unit: '',
+                role: 'text',
             },
             {
                 id: 'statistics.dayMaxSoc',
