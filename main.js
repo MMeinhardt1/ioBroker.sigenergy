@@ -1841,7 +1841,12 @@ class Sigenergy extends utils.Adapter {
                 },
                 native: {},
             };
-            await this.setObjectNotExistsAsync(s.id, statObj);
+            // extendObjectAsync (not setObjectNotExistsAsync) so that changes to
+            // an existing definition (e.g. a corrected unit or role) are applied
+            // on every adapter start, instead of being silently ignored forever
+            // once the object has been created once. The state's current value
+            // is untouched by this — only the object's common metadata is merged.
+            await this.extendObjectAsync(s.id, statObj);
         }
     }
 
