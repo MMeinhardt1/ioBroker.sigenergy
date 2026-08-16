@@ -1142,15 +1142,16 @@ class Sigenergy extends utils.Adapter {
     }
 
     /**
-     * Format a minute value as an "H:MMh" string (e.g. 83 -> "1:23h").
-     * Hours are not capped at 24. Distinguishes three cases so the caller's
-     * null-vs-undefined write semantics (see _updateStatistics) are preserved:
+     * Format a minute value as an "H:MM" string (e.g. 83 -> "1:23").
+     * Hours are not capped at 24.
+     * Distinguishes three cases so the caller's null-vs-undefined write
+     * semantics (see _updateStatistics) are preserved:
      *  - undefined  (statistic disabled via config)          -> undefined (skip write)
      *  - null / NaN (statistic enabled but currently N/A)     -> null (clears stale value)
-     *  - number                                                -> formatted "H:MMh" string
+     *  - number                                                -> formatted "H:MM" string
      *
-     * @param {number|null|undefined} totalMinutes - Duration in minutes, or null/undefined per the cases above
-     * @returns {string|null|undefined} Formatted "H:MMh" string, or null/undefined mirroring the input case
+     * @param {number|null|undefined} totalMinutes
+     * @returns {string|null|undefined}
      */
     _formatMinutesAsHM(totalMinutes) {
         if (totalMinutes === undefined) {
@@ -1163,7 +1164,7 @@ class Sigenergy extends utils.Adapter {
         const abs = Math.round(Math.abs(totalMinutes));
         const hours = Math.floor(abs / 60);
         const minutes = abs % 60;
-        return `${sign}${hours}:${String(minutes).padStart(2, '0')}h`;
+        return `${sign}${hours}:${String(minutes).padStart(2, '0')}`;
     }
 
     /**
