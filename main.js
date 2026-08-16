@@ -1696,7 +1696,7 @@ class Sigenergy extends utils.Adapter {
                 id: 'statistics.batteryTimeToFullHM',
                 name: 'Time until battery is fully charged (h:mm)',
                 type: 'string',
-                unit: '',
+                unit: 'h',
                 role: 'text',
             },
             {
@@ -1710,7 +1710,7 @@ class Sigenergy extends utils.Adapter {
                 id: 'statistics.batteryTimeRemainingHM',
                 name: 'Battery time remaining at current load (h:mm)',
                 type: 'string',
-                unit: '',
+                unit: 'h',
                 role: 'text',
             },
             {
@@ -1724,7 +1724,7 @@ class Sigenergy extends utils.Adapter {
                 id: 'statistics.batteryDailyChargeTimeHM',
                 name: 'Today: cumulative time spent charging (h:mm)',
                 type: 'string',
-                unit: '',
+                unit: 'h',
                 role: 'text',
             },
             {
@@ -1738,7 +1738,7 @@ class Sigenergy extends utils.Adapter {
                 id: 'statistics.batteryCoverageTodayHM',
                 name: 'Today: time battery covered consumption (h:mm)',
                 type: 'string',
-                unit: '',
+                unit: 'h',
                 role: 'text',
             },
             {
